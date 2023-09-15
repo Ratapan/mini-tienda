@@ -103,6 +103,7 @@ async function addProduct() {
             height="300"
             class="radius"
             autoplay
+            playsinline
             muted
           ></video>
           <canvas id="canvas" width="300" height="300" class="radius"></canvas>
