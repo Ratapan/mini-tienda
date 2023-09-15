@@ -32,7 +32,6 @@ export const useVentaStore = defineStore("ventas", {
       return [];
     },
     ventasHash: (state) => {
-      console.log(state.ventasHas);
       return { ...state.ventasHas };
     },
     ventaById: (state) => {

@@ -23,7 +23,15 @@ function addProductosVenta() {
     error.value = "Elige un producto y cantidad";
     return;
   }
+
   const selectedProduct = storeProds.productoById(selectProducto.value);
+  
+  const ventaTotals = selectedProduct.count-(idProducto in ventasHas.value?ventasHas.value[idProducto]:0)
+  
+  if (ventaTotals-cantidad < 0 ) {
+    error.value = "El número de productos excede la cantidad";
+    return;
+  }
 
   porVender.value.push({
     idProducto,
@@ -48,8 +56,8 @@ function addVenta() {
     <br />
     <div class="venta radius-mini">
       <section v-if="error !== ''">
-        <p class="n-select err-bg radius center">
-          Error: Tienes que llenar los campos
+        <p class="n-select err-bg radius center" style="font-size: 14px;">
+          {{error}}
         </p>
         <br />
       </section>
