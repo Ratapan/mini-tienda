@@ -12,6 +12,7 @@ const porVender = ref([]);
 const error = ref("");
 
 const ventas = computed(() => storeVen.ventas);
+const ventasHas = computed(() => storeVen.ventasHash);
 const productos = computed(() => storeProds.productos);
 
 function addProductosVenta() {
@@ -59,8 +60,11 @@ function addVenta() {
           name="producto"
         >
           <option value="" selected disabled>Producto</option>
-          <option v-for="prod in productos" :key="prod.id" :value="prod.id">
-            {{ prod.name }}
+          <option v-for="prod in productos" :disabled="(prod.count - ventasHas[prod.id])<1" :key="prod.id" :value="prod.id">
+            <p>{{ prod.name }}</p>
+            <p v-if="ventasHas[prod.id]">
+              &nbsp;{{ prod.count - ventasHas[prod.id] }} de {{ prod.count }}
+            </p>
           </option>
         </select>
         <br />

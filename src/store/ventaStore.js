@@ -1,15 +1,18 @@
 import { defineStore } from "pinia";
 import { useVentas } from "../composables/ventas";
-import {useProduct} from "../composables/products";
+import { useProduct } from "../composables/products";
 const { newVenta, ventas } = useVentas();
-const {productos} = useProduct();
+const { productos } = useProduct();
 
 export const useVentaStore = defineStore("ventas", {
-  state: () => ({ ventasList: [...ventas.get()] }),
+  state: () => ({
+    ventasList: [...ventas.get()],
+    ventasHas: { ...ventas.getHash() }
+  }),
   getters: {
     ventas: (state) => {
       if (state.ventasList.length > 0) {
-        const ventas =  state.ventasList.map((v) => {
+        const ventas = state.ventasList.map((v) => {
           const details = Object.keys(v.has).map((id) => {
             const prodDetail = productos.getById(id);
             const cantidad = v.has[id];
@@ -21,15 +24,17 @@ export const useVentaStore = defineStore("ventas", {
             };
           });
           const total = details.reduce((ac, cu) => (ac += cu["total"]), 0);
-          return {...v, details, total};
-
+          return { ...v, details, total };
         });
         const total = ventas.reduce((ac, cu) => (ac += cu["total"]), 0);
-        return{total,ventas}
+        return { total, ventas };
       }
       return [];
     },
-    ventasHash:()=> ventas.hashVentas,
+    ventasHash: (state) => {
+      console.log(state.ventasHas);
+      return { ...state.ventasHas };
+    },
     ventaById: (state) => {
       return (id) => state.ventasList.find((el) => el.id == id);
     },
@@ -38,10 +43,12 @@ export const useVentaStore = defineStore("ventas", {
     add(venta) {
       newVenta(venta);
       this.ventasList = [...ventas.get()];
+      this.ventasHas = { ...ventas.getHash() };
     },
     del(id) {
       ventas.eliminarVenta(id);
       this.ventasList = [...ventas.get()];
+      this.ventasHas = { ...ventas.getHash() };
     },
   },
 });

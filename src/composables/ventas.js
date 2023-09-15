@@ -48,6 +48,10 @@ class Ventas {
   get() {
     return this.ventas;
   }
+  getHash(){
+    this.updateHashVentas()
+    return {...this.hashVentas}
+  }
   isIn(id) {
     return this.ventas.reduce(
       (ac, cur) => (ac = ac == true ? true : cur.id == id),
