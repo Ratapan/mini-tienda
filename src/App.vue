@@ -13,7 +13,7 @@ const showProducts = ref(true);
   <br />
   <main>
     <div class="n-select flex">
-      <h2>Productos</h2>
+      <h2>Crear productos</h2>
       &nbsp; &nbsp;
       <i
         @click="showProducts = !showProducts"
